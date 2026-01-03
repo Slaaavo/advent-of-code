@@ -9,40 +9,12 @@ class Safe {
     passedZeroTimes = 0
 
     turnDialLeft(number: number) {
-        this.passedZeroTimes = 0
-        for (let i = 0; i < number; i++) {
-            if (this.dial === 0) {
-                this.dial = this.maxNumber - 1
-            } else {
-                this.dial -= 1
-            }
-            if (this.count0clicks && this.dial === 0) {
-                this.passedZeroTimes += 1
-            }
+        if (this.count0clicks) {
+            this.passedZeroTimes = Math.abs(Math.floor((this.dial - number - 1) / this.maxNumber))
+            this.zeroCounter += this.passedZeroTimes - (this.dial === 0 ? 1 : 0)
         }
-        this.zeroCounter += this.passedZeroTimes
-        // if (this.count0clicks) {
-        //     this.passedZeroTimes = Math.abs(Math.floor((this.dial - number) / this.maxNumber))
-        //     this.zeroCounter += this.passedZeroTimes
-        // }
-        // const diff = this.dial - number
-        // if (diff > 0) {
-        //     this.dial = diff
-        //     return
-        // } else if (diff === 0) {
-        //     if (this.count0clicks) {
-        //         this.passedZeroTimes = 1
-        //         this.zeroCounter += this.passedZeroTimes
-        //     }
-        //     this.dial = 0
-        //     return
-        // }
-        // if (this.count0clicks) {
-        //     this.passedZeroTimes = this.dial === 0 ? 0 : 1
-        //     this.passedZeroTimes += Math.floor(Math.abs(diff) / this.maxNumber)
-        //     this.zeroCounter += this.passedZeroTimes
-        // }
-        // this.dial = this.maxNumber - (Math.abs(diff) % this.maxNumber)
+
+        this.dial = (this.maxNumber + (this.dial - number) % this.maxNumber) % this.maxNumber
     }
 
     turnDialRight(number: number) {
